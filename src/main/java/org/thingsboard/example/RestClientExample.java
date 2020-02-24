@@ -7,34 +7,34 @@ import org.thingsboard.server.common.data.relation.EntityRelation;
 
 public class RestClientExample {
     public static void main(String[] args) {
-        // credentials for thingsboard
+        // ThingsBoard REST API URL
+        String url = "http://localhost:8080";
+
+        // Default Tenant Administrator credentials
         String username = "tenant@thingsboard.org";
         String password = "tenant";
 
-        // url for thingsboard
-        String url = "http://localhost:8080";
-
-        // creating new rest client and auth with credentials
+        // Creating new rest client and auth with credentials
         RestClient client = new RestClient(url);
         client.login(username, password);
 
-        // creating and saving asset
+        // Creating an Asset
         Asset asset = new Asset();
-        asset.setName("building_1");
+        asset.setName("Building 1");
         asset.setType("building");
         asset = client.saveAsset(asset);
 
-        // creating and saving device
+        // creating a Device
         Device device = new Device();
-        device.setName("thermometer_1");
+        device.setName("Thermometer 1");
         device.setType("thermometer");
         device = client.saveDevice(device);
 
         // creating relations from device to asset
         EntityRelation relation = new EntityRelation();
-        relation.setFrom(device.getId());
-        relation.setTo(asset.getId());
-        relation.setType("default_relation");
+        relation.setFrom(asset.getId());
+        relation.setTo(device.getId());
+        relation.setType("Contains");
         client.saveRelation(relation);
     }
 }
